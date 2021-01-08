@@ -1,26 +1,30 @@
-import React, { useCallback, useState } from "react";
-import Head from "next/head";
-import AppLayout from "../Components/AppLayout";
-import { Checkbox, Form, Input, Button } from "antd";
-import useInput from "../hooks/useInput";
-import styled from "styled-components";
+import React, { useCallback, useState } from 'react';
+import Head from 'next/head';
+import { Checkbox, Form, Input, Button } from 'antd';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import useInput from '../hooks/useInput';
+import AppLayout from '../Components/AppLayout';
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
 const ErrorMassage = styled.div`
   color: #eb4d4b;
 `;
 
 const Signup = () => {
-  const [id, onChangeId] = useInput("");
-  const [nickname, onChangeNickname] = useInput("");
-  const [password, onChangePassword] = useInput("");
-  const [passwordCheck, setPasswordCheck] = useState("");
+  const dispatch = useDispatch();
+  const { signUpLoading } = useSelector((state) => state.user);
+  const [email, onChangeEmail] = useInput('');
+  const [nickname, onChangeNickname] = useInput('');
+  const [password, onChangePassword] = useInput('');
+  const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const onChangePasswordCheck = useCallback(
     (e) => {
       setPasswordCheck(e.target.value);
       setPasswordError(e.target.value !== password);
     },
-    [password]
+    [password],
   );
   const [term, setTerm] = useState(false);
   const [termError, setTermError] = useState(false);
@@ -34,11 +38,15 @@ const Signup = () => {
       return setPasswordError(true);
     }
     if (!term) {
-      console.log('term error!')
+      console.log('term error!');
       return setTermError(true);
     }
-    console.log(id, nickname, password);
-  }, [password, passwordCheck, term]);
+    console.log(email, nickname, password);
+    return dispatch({
+      type: SIGN_UP_REQUEST,
+      data: { email, nickname, password },
+    });
+  }, [email, password, passwordCheck, term]);
 
   return (
     <>
@@ -49,9 +57,15 @@ const Signup = () => {
       <AppLayout>
         <Form onFinish={onSubmit}>
           <div>
-            <label htmlFor="user-id">아이디</label>
+            <label htmlFor="user-id">이메일</label>
             <br />
-            <Input name="user-id" value={id} required onChange={onChangeId} />
+            <Input
+              name="user-id"
+              type="email"
+              value={email}
+              required
+              onChange={onChangeEmail}
+            />
           </div>
           <div>
             <label htmlFor="user-nickname">닉네임</label>
@@ -95,7 +109,7 @@ const Signup = () => {
             {termError && <ErrorMassage>동의해!</ErrorMassage>}
           </div>
           <div>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={signUpLoading}>
               가입하기
             </Button>
           </div>

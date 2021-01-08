@@ -1,14 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Link from "next/link";
-import { Input, Menu, Row, Col } from "antd";
-import styled ,{createGlobalStyle}from "styled-components";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
+import { Input, Menu, Row, Col } from 'antd';
+import styled, { createGlobalStyle } from 'styled-components';
 
-import UserProfile from "./UserProfile";
-import LoginForm from "./LoginForm";
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
+import UserProfile from './UserProfile';
+import LoginForm from './LoginForm';
 
-//index profile signup에서 공통적을 쓰일 레이아웃
+// index profile signup에서 공통적을 쓰일 레이아웃
 
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
@@ -57,8 +57,7 @@ const AppLayout = ({ children }) => {
           {isLoggedIn ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
-          {" "}
-          {children}{" "}
+          {children}
         </Col>
         <Col xs={24} md={6}>
           <a

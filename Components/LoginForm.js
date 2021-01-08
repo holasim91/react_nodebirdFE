@@ -1,35 +1,40 @@
-import React, { useCallback, } from "react";
-import Link from "next/link";
-import { Input, Form, Button } from "antd";
-import styled from "styled-components";
-import useInput from "../hooks/useInput";
-import { useDispatch, useSelector } from "react-redux";
-import { loginRequestAction } from "../reducers/user";
+import React, { useCallback } from 'react';
+import Link from 'next/link';
+import { Input, Form, Button } from 'antd';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import useInput from '../hooks/useInput';
+import { loginRequestAction } from '../reducers/user';
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;
 `;
 
 const FormWarapper = styled(Form)`
-    padding: 10px;
-`
+  padding: 10px;
+`;
 
 const LoginForm = () => {
-  const {isLoggingIn} = useSelector(state => state.user)
-  const dispatch = useDispatch()
-  const [id, onChangeId] = useInput('')
-  const [password, onChangePassword] = useInput('')
+  const { isLoggingIn } = useSelector((state) => state.user);
+  const dispatch = useDispatch(); // dispatch가 무엇인가...
+  const [email, onChangeEmail] = useInput('');
+  const [password, onChangePassword] = useInput('');
   const onSubmitForm = useCallback(() => {
-    console.log(id, password);
-    dispatch(loginRequestAction({id, password}))
-  }, [id, password]);
+    console.log(email, password);
+    dispatch(loginRequestAction({ email, password }));
+  }, [email, password]);
 
   return (
     <FormWarapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-id">아이디</label>
+        <label htmlFor="user-email">이메일</label>
         <br />
-        <Input name="user-id" value={id} onChange={onChangeId} required />
+        <Input
+          name="user-email"
+          value={email}
+          onChange={onChangeEmail}
+          required
+        />
       </div>
       <div>
         <label htmlFor="user-password">비밀번호</label>
@@ -55,6 +60,5 @@ const LoginForm = () => {
     </FormWarapper>
   );
 };
-
 
 export default LoginForm;
